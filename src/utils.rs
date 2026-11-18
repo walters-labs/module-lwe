@@ -1,9 +1,12 @@
+#[path = "ntt_roots.rs"]
+mod ntt_roots;
+pub(crate) use ntt_roots::root_for_parameters;
+
 use polynomial_ring::Polynomial;
 use rand_distr::{Uniform, Distribution};
 use rand::SeedableRng;
 use rand::rngs::StdRng;
 use ring_lwe::utils::{polyadd, polymul_fast, gen_uniform_poly,nearest_int};
-use ntt::omega;
 use base64::{engine::general_purpose, Engine as _};
 use bincode;
 
@@ -27,7 +30,7 @@ impl Default for Parameters {
         let n = 512;
         let q = 12289;
         let k = 8;
-        let omega = omega(q, 2 * n);
+        let omega = root_for_parameters(q, 2 * n);
         let mut poly_vec = vec![0i64; n + 1];
         poly_vec[0] = 1;
         poly_vec[n] = 1;
